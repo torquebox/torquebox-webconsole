@@ -4,38 +4,35 @@ module Rack
   class Webconsole
     class Sandbox
 
-      def switch_runtime(name, app = nil)
-        runtime = TorqueBox::Webconsole.lookup_runtime(name, app)
+      def switch_runtime(name)
+        runtime = TorqueBox::Webconsole.lookup_runtime(name)
         if runtime.nil?
-          msg = "runtime #{name} not found"
-          msg << " for app #{app}" if app
-          msg
+          "runtime #{name} not found"
         else
           web_runtime = TorqueBox::Webconsole.web_runtime[0]
           web_runtime.evaluate <<-EOS
             runtime = TorqueBox::Webconsole.lookup_runtime(%q(#{name}))
             $runtime = runtime
           EOS
-          "switched to #{current_runtime}"
+          "switched to #{name} runtime"
         end
       end
 
       def list_runtimes
-        TorqueBox::Webconsole.list_runtimes.map { |x| TorqueBox::Webconsole.runtime_metadata(x) }
+        TorqueBox::Webconsole.list_runtimes
       end
 
       def current_runtime
-        TorqueBox::Webconsole.runtime_metadata($runtime[1..-1])
+        web_runtime = TorqueBox::Webconsole.web_runtime[0]
+        web_runtime.evaluate "$runtime[1]"
       end
 
       def help
         "Welcome to the TorqueBox webconsole. It's rack-webconsole with the following " +
           "additions: * list_runtimes - returns list of all of the TorqueBox runtimes " +
-          "along with their app names. * switch_runtime(name[, app_name]) - switch " +
-          "your execution context to a different runtime. If the app_name isn't " +
-          "provided, it will attempt to switch to the given runtime within the current " +
-          "application. * current_runtime - returns the name and app name of the " +
-          "current runtime."
+          "for the current application. * switch_runtime(name) - switch " +
+          "your execution context to a different runtime. * current_runtime - returns " +
+          "the name of the current runtime."
       end
     end
 
