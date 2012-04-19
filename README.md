@@ -11,7 +11,8 @@ Add this line to your application's Gemfile:
     gem 'torquebox-webconsole'
 
 Then follow the [instructions](http://codegram.github.com/rack-webconsole/) for
-rack-webconsole. 
+rack-webconsole, replacing any instances of `require 'rack/webconsole'` with
+`require 'torquebox/webconsole'`.
 
 *Note:* don't add `rack-webconsole` to your Gemfile - `torquebox-webconsole`
 will bring it in for you, and currently uses a fork of `rack-webconsole` pending 
