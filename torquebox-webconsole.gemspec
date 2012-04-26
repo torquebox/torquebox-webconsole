@@ -15,5 +15,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Torquebox::Webconsole::VERSION
 
-  gem.add_runtime_dependency 'tobias-rack-webconsole', '0.1.4'
+  gem.add_runtime_dependency 'tobias-rack-webconsole', '0.1.5'
 end
